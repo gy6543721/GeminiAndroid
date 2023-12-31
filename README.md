@@ -3,4 +3,4 @@
 
 Launch | Response
 :--: | :--:
-<img width="271" alt="Launch" src="https://github.com/DroidKaigi/conference-app-2023/assets/46208481/5668b2ac-e4d4-4eb7-bb32-ae1a7eadfaae"> | <img width="271" alt="Response" src="https://github.com/DroidKaigi/conference-app-2023/assets/46208481/8d4dd20f-d642-4801-8786-aa1c0b592ed2">
+<img width="271" alt="Launch" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/9185036a-8177-4c22-9a88-a712a1c1e186"> | <img width="271" alt="Response" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/89afb608-319c-4f06-b7d5-70a43c8e1c55">
