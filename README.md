@@ -1,5 +1,5 @@
 # Gemini Android
- Gemini App (Simple UI)
+ Gemini Android App written in Kotlin and Compose.
 
 <img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
