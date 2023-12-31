@@ -3,7 +3,8 @@
 
 <img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
-Please add your own api key into `local.properties` to use this app.
+Please add your own API key into `local.properties` to use this app.
+You can get Gemini API key [Here](https://ai.google.dev/).
 
 ```
 API_KEY=[your api key]
