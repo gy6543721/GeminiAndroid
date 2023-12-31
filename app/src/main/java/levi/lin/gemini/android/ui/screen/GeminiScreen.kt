@@ -48,7 +48,8 @@ internal fun GeminiRoute(
         uiState = geminiUiState,
         onButtonClicked = { inputText ->
             geminiViewModel.respond(inputText)
-        })
+        }
+    )
 }
 
 @Composable
