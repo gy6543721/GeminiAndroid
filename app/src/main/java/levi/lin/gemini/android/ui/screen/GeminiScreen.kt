@@ -1,17 +1,24 @@
 package levi.lin.gemini.android.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,88 +36,106 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import levi.lin.gemini.android.GeminiUiState
 import levi.lin.gemini.android.GeminiViewModel
 import levi.lin.gemini.android.R
+import levi.lin.gemini.android.ui.theme.LightBlue80
 
 @Composable
 internal fun GeminiRoute(
     geminiViewModel: GeminiViewModel = viewModel()
 ) {
-    val summarizeUiState by geminiViewModel.uiState.collectAsState()
+    val geminiUiState by geminiViewModel.uiState.collectAsState()
 
-    GeminiScreen(summarizeUiState, onSummarizeClicked = { inputText ->
-        geminiViewModel.summarize(inputText)
-    })
+    GeminiScreen(
+        uiState = geminiUiState,
+        onButtonClicked = { inputText ->
+            geminiViewModel.respond(inputText)
+        })
 }
 
 @Composable
 fun GeminiScreen(
     uiState: GeminiUiState = GeminiUiState.Initial,
-    onSummarizeClicked: (String) -> Unit = {}
+    onButtonClicked: (String) -> Unit = {}
 ) {
-    var prompt by remember { mutableStateOf("") }
-    Column(
-        modifier = Modifier
-            .padding(all = 8.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Row {
-            TextField(
-                value = prompt,
-                label = { Text(stringResource(R.string.gemini_input_label)) },
-                placeholder = { Text(stringResource(R.string.gemini_input_hint)) },
-                onValueChange = { prompt = it },
-                modifier = Modifier
-                    .weight(8f)
-            )
-            TextButton(
-                onClick = {
-                    if (prompt.isNotBlank()) {
-                        onSummarizeClicked(prompt)
-                    }
-                },
+    var inputText by remember { mutableStateOf("") }
 
-                modifier = Modifier
-                    .weight(2f)
-                    .padding(all = 4.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                Text(stringResource(R.string.action_go))
+    Scaffold(
+        bottomBar = {
+            Column(modifier = Modifier.background(color = LightBlue80)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 10.dp)
+                ) {
+                    TextField(
+                        value = inputText,
+                        onValueChange = { inputText = it },
+                        modifier = Modifier.weight(1f),
+                        label = { Text(text = stringResource(R.string.gemini_input_label)) },
+                        placeholder = { Text(text = stringResource(R.string.gemini_input_hint)) },
+                        trailingIcon = {
+                            if (inputText.isNotEmpty()) {
+                                IconButton(onClick = { inputText = "" }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Clear,
+                                        contentDescription = "Clear"
+                                    )
+                                }
+                            }
+                        },
+                    )
+                    Spacer(Modifier.weight(0.05f))
+                    Button(
+                        onClick = {
+                            if (inputText.isNotBlank()) {
+                                onButtonClicked(inputText)
+                            }
+                        },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Text(text = stringResource(R.string.action_go))
+                    }
+                }
             }
         }
-        when (uiState) {
-            GeminiUiState.Initial -> {
-                // Nothing is shown
-            }
-
-            GeminiUiState.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    CircularProgressIndicator()
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+            when (uiState) {
+                is GeminiUiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    ) {
+                        items(uiState.outputText.lines()) { line ->
+                            Text(
+                                text = line,
+                                modifier = Modifier.padding(4.dp)
+                            )
+                        }
+                    }
                 }
-            }
 
-            is GeminiUiState.Success -> {
-                Row(modifier = Modifier.padding(all = 8.dp)) {
-                    Icon(
-                        Icons.Outlined.Person,
-                        contentDescription = "Person Icon"
-                    )
+                is GeminiUiState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                }
+
+                is GeminiUiState.Error -> {
                     Text(
-                        text = uiState.outputText,
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                        text = uiState.errorMessage,
+                        color = Color.Red,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
-            }
 
-            is GeminiUiState.Error -> {
-                Text(
-                    text = uiState.errorMessage,
-                    color = Color.Red,
-                    modifier = Modifier.padding(all = 8.dp)
-                )
+                else -> {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    )
+                }
             }
         }
     }

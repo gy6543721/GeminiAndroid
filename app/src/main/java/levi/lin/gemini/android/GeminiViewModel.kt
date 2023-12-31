@@ -17,10 +17,10 @@ class GeminiViewModel(
     val uiState: StateFlow<GeminiUiState> =
         _uiState.asStateFlow()
 
-    fun summarize(inputText: String) {
+    fun respond(inputText: String) {
         _uiState.value = GeminiUiState.Loading
 
-        val prompt = "Your name is Gemini, please read the following text, and respond as if you are the speaker's special one in Traditional Chinese: $inputText"
+        val prompt = "Read the following text, and respond with detail answer as if you are the speaker's special one in Traditional Chinese: $inputText"
 
         viewModelScope.launch {
             try {
