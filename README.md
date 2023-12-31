@@ -1,7 +1,7 @@
 # Gemini Android
  Gemini App (Simple UI)
 
-<img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/icon.png" height="200"/>
+<img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
 Launch | Response
 :--: | :--:
