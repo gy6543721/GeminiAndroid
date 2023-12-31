@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -20,7 +22,13 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "apiKey", "\"AIzaSyA-Lkpmh6DBMi8bxDVYwVtxMxXgheO7V70\"")
+        val properties = Properties()
+        if (project.rootProject.file("local.properties").canRead()) {
+            properties.load(project.rootProject.file("local.properties").inputStream())
+
+        }
+
+        buildConfigField("String", "apiKey", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
