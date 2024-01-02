@@ -1,12 +1,12 @@
 # Gemini Android
- Gemini Android App written in Kotlin and Compose.
+Gemini Android App written in Kotlin and Compose.  
 [Google Play Store](https://play.google.com/store/apps/details?id=levi.lin.gemini.android)  
 
 <img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
 ### Introduction
-Please add your own API key into `local.properties` after cloning this app.
-You can get Gemini API key [Here](https://ai.google.dev/).
+Please add your own API key into `local.properties` after cloning this app.  
+You can get Gemini API key [here](https://ai.google.dev/).  
 
 ```
 API_KEY=[your api key]
