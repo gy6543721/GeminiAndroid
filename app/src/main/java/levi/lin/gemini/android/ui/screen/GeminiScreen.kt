@@ -39,7 +39,7 @@ import levi.lin.gemini.android.R
 import levi.lin.gemini.android.ui.theme.LightBlue80
 
 @Composable
-internal fun GeminiRoute(
+internal fun GeminiScreenContainer(
     geminiViewModel: GeminiViewModel = viewModel()
 ) {
     val geminiUiState by geminiViewModel.uiState.collectAsState()
