@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.google.ai.client.generativeai.GenerativeModel
-import levi.lin.gemini.android.ui.screen.GeminiRoute
+import levi.lin.gemini.android.ui.screen.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                         apiKey = BuildConfig.apiKey
                     )
                     val viewModel = GeminiViewModel(generativeModel)
-                    GeminiRoute(viewModel)
+                    GeminiScreenContainer(viewModel)
                 }
             }
         }
