@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -57,7 +58,7 @@ fun GeminiScreen(
     uiState: GeminiUiState = GeminiUiState.Initial,
     onButtonClicked: (String) -> Unit = {}
 ) {
-    var inputText by remember { mutableStateOf("") }
+    var inputText by remember { mutableStateOf(value = "") }
 
     Scaffold(
         bottomBar = {
@@ -71,8 +72,8 @@ fun GeminiScreen(
                         value = inputText,
                         onValueChange = { inputText = it },
                         modifier = Modifier.weight(1f),
-                        label = { Text(text = stringResource(R.string.gemini_input_label)) },
-                        placeholder = { Text(text = stringResource(R.string.gemini_input_hint)) },
+                        label = { Text(text = stringResource(id = R.string.gemini_input_label)) },
+                        placeholder = { Text(text = stringResource(id = R.string.gemini_input_hint)) },
                         trailingIcon = {
                             if (inputText.isNotEmpty()) {
                                 IconButton(onClick = { inputText = "" }) {
@@ -84,34 +85,36 @@ fun GeminiScreen(
                             }
                         },
                     )
-                    Spacer(Modifier.weight(0.05f))
+                    Spacer(modifier = Modifier.weight(weight = 0.05f))
                     Button(
                         onClick = {
                             if (inputText.isNotBlank()) {
                                 onButtonClicked(inputText)
                             }
                         },
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
                     ) {
-                        Text(text = stringResource(R.string.action_go))
+                        Text(text = stringResource(id = R.string.action_go))
                     }
                 }
             }
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.padding(paddingValues = innerPadding)) {
             when (uiState) {
                 is GeminiUiState.Success -> {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .weight(1f)
+                            .weight(weight = 1f)
                     ) {
                         items(uiState.outputText.lines()) { line ->
-                            Text(
-                                text = line,
-                                modifier = Modifier.padding(4.dp)
-                            )
+                            SelectionContainer {
+                                Text(
+                                    text = line,
+                                    modifier = Modifier.padding(4.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -126,7 +129,7 @@ fun GeminiScreen(
                     Text(
                         text = uiState.errorMessage,
                         color = Color.Red,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                     )
                 }
 
@@ -134,7 +137,7 @@ fun GeminiScreen(
                     Spacer(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .weight(1f)
+                            .weight(weight = 1f)
                     )
                 }
             }
