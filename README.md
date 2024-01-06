@@ -1,6 +1,6 @@
 # Gemini Android
 Gemini Android App written in Kotlin and Compose.  
-Now support Traditional Chinese, will support more languages in the future.  
+Now support English, Japanese and Traditional Chinese, will support more languages in the future.  
 [Google Play Store](https://play.google.com/store/apps/details?id=levi.lin.gemini.android)  
 
 <img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
