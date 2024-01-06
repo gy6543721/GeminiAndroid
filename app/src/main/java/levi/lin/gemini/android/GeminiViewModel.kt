@@ -22,7 +22,8 @@ class GeminiViewModel(
         _uiState.value = GeminiUiState.Loading
 
         val deviceLanguage = Locale.getDefault().displayLanguage
-        val prompt = "Read the following content, and respond with detail answer in $deviceLanguage as if you are the speaker's special one: $inputText"
+        val prompt =
+            "Read the following content, and respond with detail answer in $deviceLanguage as if you are the speaker's special one: $inputText"
 
         viewModelScope.launch {
             try {
