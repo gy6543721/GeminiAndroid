@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gemini</string>
+    <string name="action_go">GO</string>
+    <string name="gemini_input_label">Your lovely magic assistant</string>
+    <string name="gemini_input_hint">Please ask anything you want to know, Gemini will respond to you kindly</string>
+</resources>

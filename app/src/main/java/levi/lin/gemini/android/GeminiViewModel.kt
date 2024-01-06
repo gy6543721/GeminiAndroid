@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class GeminiViewModel(
     private val generativeModel: GenerativeModel
@@ -20,7 +21,9 @@ class GeminiViewModel(
     fun respond(inputText: String) {
         _uiState.value = GeminiUiState.Loading
 
-        val prompt = "Read the following text, and respond with detail answer as if you are the speaker's special one in Traditional Chinese: $inputText"
+        val deviceLanguage = Locale.getDefault().displayLanguage
+        val prompt =
+            "Read the following content, and respond with detail answer in $deviceLanguage as if you are the speaker's special one: $inputText"
 
         viewModelScope.launch {
             try {
