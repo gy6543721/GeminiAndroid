@@ -3,11 +3,13 @@ package levi.lin.gemini.android.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,8 +30,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,87 +65,100 @@ fun GeminiScreen(
     var inputText by remember { mutableStateOf(value = "") }
 
     Scaffold(
+        modifier = Modifier.imePadding(),
         bottomBar = {
-            Column(modifier = Modifier.background(color = LightBlue80)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 10.dp)
-                ) {
-                    TextField(
-                        value = inputText,
-                        onValueChange = { inputText = it },
-                        modifier = Modifier.weight(1f),
-                        label = { Text(text = stringResource(id = R.string.gemini_input_label)) },
-                        placeholder = { Text(text = stringResource(id = R.string.gemini_input_hint)) },
-                        trailingIcon = {
-                            if (inputText.isNotEmpty()) {
-                                IconButton(onClick = { inputText = "" }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Clear,
-                                        contentDescription = "Clear"
-                                    )
-                                }
-                            }
-                        },
-                    )
-                    Spacer(modifier = Modifier.weight(weight = 0.05f))
-                    Button(
-                        onClick = {
-                            if (inputText.isNotBlank()) {
-                                onButtonClicked(inputText)
-                            }
-                        },
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                    ) {
-                        Text(text = stringResource(id = R.string.action_go))
+            InputBar(
+                inputText = inputText,
+                onTextChange = { inputText = it },
+                onButtonClicked = onButtonClicked
+            )
+        }
+    ) { innerPadding ->
+        ScreenContent(uiState, innerPadding)
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun InputBar(inputText: String, onTextChange: (String) -> Unit, onButtonClicked: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    Row(
+        modifier = Modifier
+            .background(color = LightBlue80)
+            .fillMaxWidth()
+            .padding(all = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = inputText,
+            onValueChange = onTextChange,
+            modifier = Modifier.weight(1f),
+            label = { Text(text = stringResource(id = R.string.gemini_input_label)) },
+            placeholder = { Text(text = stringResource(id = R.string.gemini_input_hint)) },
+            trailingIcon = {
+                if (inputText.isNotEmpty()) {
+                    IconButton(onClick = { onTextChange("") }) {
+                        Icon(
+                            imageVector = Icons.Filled.Clear,
+                            contentDescription = "Clear"
+                        )
                     }
                 }
             }
+        )
+        Spacer(modifier = Modifier.weight(0.05f))
+        Button(
+            onClick = {
+                onButtonClicked(inputText)
+                keyboardController?.hide()
+            },
+        ) {
+            Text(text = stringResource(id = R.string.action_go))
         }
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(paddingValues = innerPadding)) {
-            when (uiState) {
-                is GeminiUiState.Success -> {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(weight = 1f)
-                    ) {
-                        items(uiState.outputText.lines()) { line ->
-                            SelectionContainer {
-                                Text(
-                                    text = line,
-                                    modifier = Modifier.padding(4.dp)
-                                )
-                            }
+    }
+}
+
+@Composable
+fun ScreenContent(uiState: GeminiUiState, innerPadding: PaddingValues) {
+    Column(modifier = Modifier.padding(innerPadding)) {
+        when (uiState) {
+            is GeminiUiState.Success -> {
+                LazyColumn(modifier = Modifier.fillMaxHeight()) {
+                    items(uiState.outputText.lines()) { line ->
+                        SelectionContainer {
+                            Text(
+                                text = line,
+                                modifier = Modifier.padding(4.dp)
+                            )
                         }
                     }
                 }
-
-                is GeminiUiState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                    }
-                }
-
-                is GeminiUiState.Error -> {
-                    Text(
-                        text = uiState.errorMessage,
-                        color = Color.Red,
-                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                    )
-                }
-
-                else -> {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(weight = 1f)
-                    )
-                }
             }
+
+            is GeminiUiState.Loading -> {
+                LoadingIndicator()
+            }
+
+            is GeminiUiState.Error -> {
+                ErrorMessage(uiState.errorMessage)
+            }
+
+            else -> Spacer(modifier = Modifier.fillMaxHeight())
         }
+    }
+}
+
+@Composable
+fun LoadingIndicator() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun ErrorMessage(message: String) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = message, color = Color.Red)
     }
 }
 
