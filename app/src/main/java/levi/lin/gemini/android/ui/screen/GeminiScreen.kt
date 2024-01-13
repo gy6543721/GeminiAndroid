@@ -1,6 +1,9 @@
 package levi.lin.gemini.android.ui.screen
 
+import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -32,11 +39,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import levi.lin.gemini.android.GeminiUiState
 import levi.lin.gemini.android.GeminiViewModel
@@ -45,14 +61,23 @@ import levi.lin.gemini.android.ui.theme.LightBlue80
 
 @Composable
 internal fun GeminiScreenContainer(
-    geminiViewModel: GeminiViewModel = viewModel()
+    geminiViewModel: GeminiViewModel = viewModel(),
+    onImageSelected: () -> Unit = {}
 ) {
     val geminiUiState by geminiViewModel.uiState.collectAsState()
+    val selectedImageBitmapList by geminiViewModel.selectedImageBitmaps.collectAsState()
+    val selectedImageCount by geminiViewModel.selectedImageCount.collectAsState()
 
     GeminiScreen(
         uiState = geminiUiState,
+        selectedImageBitmapList = selectedImageBitmapList,
+        selectedImageCount = selectedImageCount,
         onButtonClicked = { inputText ->
             geminiViewModel.respond(inputText)
+        },
+        onImageSelected = onImageSelected,
+        onClearImages = {
+            geminiViewModel.clearSelectedImages()
         }
     )
 }
@@ -60,17 +85,30 @@ internal fun GeminiScreenContainer(
 @Composable
 fun GeminiScreen(
     uiState: GeminiUiState = GeminiUiState.Initial,
-    onButtonClicked: (String) -> Unit = {}
+    selectedImageBitmapList: List<Bitmap?> = emptyList(),
+    selectedImageCount: Int = 0,
+    onButtonClicked: (String) -> Unit = {},
+    onImageSelected: () -> Unit = {},
+    onClearImages: () -> Unit = {}
 ) {
     var inputText by remember { mutableStateOf(value = "") }
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = Modifier.imePadding(),
+        modifier = Modifier
+            .imePadding()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            },
         bottomBar = {
             InputBar(
                 inputText = inputText,
+                selectedImageBitmapList = selectedImageBitmapList,
+                selectedImageCount = selectedImageCount,
                 onTextChange = { inputText = it },
-                onButtonClicked = onButtonClicked
+                onButtonClicked = onButtonClicked,
+                onImageSelected = onImageSelected,
+                onClearImages = onClearImages
             )
         }
     ) { innerPadding ->
@@ -80,7 +118,15 @@ fun GeminiScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun InputBar(inputText: String, onTextChange: (String) -> Unit, onButtonClicked: (String) -> Unit) {
+fun InputBar(
+    inputText: String,
+    selectedImageBitmapList: List<Bitmap?>,
+    selectedImageCount: Int,
+    onTextChange: (String) -> Unit,
+    onButtonClicked: (String) -> Unit,
+    onImageSelected: () -> Unit,
+    onClearImages: () -> Unit
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Row(
         modifier = Modifier
@@ -97,7 +143,9 @@ fun InputBar(inputText: String, onTextChange: (String) -> Unit, onButtonClicked:
             placeholder = { Text(text = stringResource(id = R.string.gemini_input_hint)) },
             trailingIcon = {
                 if (inputText.isNotEmpty()) {
-                    IconButton(onClick = { onTextChange("") }) {
+                    IconButton(onClick = {
+                        onTextChange("")
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Clear,
                             contentDescription = "Clear"
@@ -106,7 +154,73 @@ fun InputBar(inputText: String, onTextChange: (String) -> Unit, onButtonClicked:
                 }
             }
         )
-        Spacer(modifier = Modifier.weight(0.05f))
+        Spacer(modifier = Modifier.weight(0.02f))
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(RectangleShape),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .size(48.dp)
+                    .align(Alignment.BottomStart),
+                onClick = { onImageSelected() }
+            ) {
+                if (selectedImageBitmapList.isNotEmpty()) {
+                    selectedImageBitmapList.first()?.let { image ->
+                        Image(
+                            bitmap = image.asImageBitmap(),
+                            modifier = Modifier.fillMaxSize(),
+                            contentDescription = "Selected Image",
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    if (selectedImageCount > 1) {
+                        Box(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clip(CircleShape)
+                                .background(Color.Red),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            val fontSize = when (selectedImageCount.toString().length) {
+                                1 -> 12.sp
+                                2 -> 10.sp
+                                else -> 8.sp
+                            }
+                            Text(
+                                text = selectedImageCount.toString(),
+                                color = Color.White,
+                                fontSize = fontSize,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                } else {
+                    Icon(imageVector = Icons.Default.AddCircle, contentDescription = "Select Image")
+                }
+            }
+
+            if (selectedImageBitmapList.isNotEmpty()) {
+                IconButton(
+                    onClick = { onClearImages() },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(15.dp)
+                        .background(Color.Gray)
+                        .align(Alignment.TopEnd),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Clear Images",
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.weight(0.02f))
         Button(
             onClick = {
                 onButtonClicked(inputText)
