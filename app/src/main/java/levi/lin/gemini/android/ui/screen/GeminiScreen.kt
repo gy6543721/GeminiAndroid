@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -120,17 +120,16 @@ fun InputBar(inputText: String, onTextChange: (String) -> Unit, onButtonClicked:
 
 @Composable
 fun ScreenContent(uiState: GeminiUiState, innerPadding: PaddingValues) {
+    val scrollState = rememberScrollState()
     Column(modifier = Modifier.padding(innerPadding)) {
         when (uiState) {
             is GeminiUiState.Success -> {
-                LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(uiState.outputText.lines()) { line ->
-                        SelectionContainer {
-                            Text(
-                                text = line,
-                                modifier = Modifier.padding(4.dp)
-                            )
-                        }
+                Box(modifier = Modifier.verticalScroll(scrollState)) {
+                    SelectionContainer {
+                        Text(
+                            text = uiState.outputText,
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
             }
