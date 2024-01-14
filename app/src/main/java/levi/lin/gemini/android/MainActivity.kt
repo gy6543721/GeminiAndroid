@@ -18,8 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
-import levi.lin.gemini.android.ui.screen.GeminiScreenContainer
+import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
+import levi.lin.gemini.android.utility.ModelNameListener
+import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import java.io.IOException
 
 class MainActivity : ComponentActivity(), ModelNameListener {

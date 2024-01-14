@@ -1,4 +1,4 @@
-package levi.lin.gemini.android.ui.screen
+package levi.lin.gemini.android.ui.view
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,10 +24,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -56,8 +58,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.ai.client.generativeai.GenerativeModel
 import levi.lin.gemini.android.BuildConfig
-import levi.lin.gemini.android.GeminiUiState
-import levi.lin.gemini.android.GeminiViewModel
+import levi.lin.gemini.android.ui.state.GeminiUiState
+import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import levi.lin.gemini.android.R
 import levi.lin.gemini.android.ui.theme.LightBlue80
 
@@ -207,7 +209,11 @@ fun InputBar(
                         }
                     }
                 } else {
-                    Icon(imageVector = Icons.Default.AddCircle, contentDescription = "Select Image")
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = "Select Image",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
 
@@ -228,14 +234,21 @@ fun InputBar(
                 }
             }
         }
-        Spacer(modifier = Modifier.weight(0.02f))
-        Button(
+        Spacer(modifier = Modifier.weight(0.01f))
+        IconButton(
             onClick = {
                 onButtonClicked(inputText)
                 keyboardController?.hide()
             },
+            modifier = Modifier
+                .weight(0.2f)
+                .aspectRatio(ratio = 1f)
         ) {
-            Text(text = stringResource(id = R.string.action_go))
+            Icon(
+                imageVector = Icons.Default.Send,
+                contentDescription = "Send",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

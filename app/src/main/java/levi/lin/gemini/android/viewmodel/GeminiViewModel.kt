@@ -1,4 +1,4 @@
-package levi.lin.gemini.android
+package levi.lin.gemini.android.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import levi.lin.gemini.android.ui.state.GeminiUiState
 import java.util.Locale
 
 class GeminiViewModel(
@@ -40,9 +41,9 @@ class GeminiViewModel(
 
         val deviceLanguage = Locale.getDefault().displayLanguage
         val textPrompt =
-            "According to the contents provided as below: [$inputText], "
+            "According to the contents ($inputText) provided, "
         val imagePrompt =
-            "According to the images and contents: [$inputText] provided, "
+            "According to the images and contents ($inputText) provided, "
         val generalPrompt =
             "respond with detail answers or advices in $deviceLanguage as if you are the speaker's special one."
         val imageList = selectedImageBitmaps.value
