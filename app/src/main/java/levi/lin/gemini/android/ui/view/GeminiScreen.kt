@@ -91,7 +91,6 @@ internal fun GeminiScreenContainer(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GeminiScreen(
     uiState: GeminiUiState = GeminiUiState.Initial,
