@@ -73,7 +73,9 @@ class MainActivity : ComponentActivity(), GenerativeModelListener {
     private val selectImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val imageBitmaps = result.data?.let { extractBitmapsFromIntent(it) }.orEmpty()
+                val imageBitmaps = result.data?.let { intent ->
+                    extractBitmapsFromIntent(intent = intent)
+                }.orEmpty()
                 viewModel.clearSelectedImages()
                 viewModel.setImageCount(imageBitmaps.size)
                 viewModel.setImageBitmaps(imageBitmaps)

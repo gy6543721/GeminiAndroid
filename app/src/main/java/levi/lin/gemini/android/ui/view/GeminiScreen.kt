@@ -91,6 +91,7 @@ internal fun GeminiScreenContainer(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GeminiScreen(
     uiState: GeminiUiState = GeminiUiState.Initial,
@@ -107,14 +108,20 @@ fun GeminiScreen(
         modifier = Modifier
             .imePadding()
             .pointerInput(Unit) {
-                detectTapGestures(onTap = { focusManager.clearFocus() })
+                detectTapGestures(
+                    onTap = {
+                        focusManager.clearFocus()
+                    }
+                )
             },
         bottomBar = {
             InputBar(
                 inputText = inputText,
                 selectedImageBitmapList = selectedImageBitmapList,
                 selectedImageCount = selectedImageCount,
-                onTextChange = { inputText = it },
+                onTextChange = { text ->
+                    inputText = text
+                },
                 onButtonClicked = onButtonClicked,
                 onImageSelected = onImageSelected,
                 onClearImages = onClearImages
