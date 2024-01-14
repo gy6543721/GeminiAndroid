@@ -1,5 +1,5 @@
 package levi.lin.gemini.android.utility
 
-interface ModelNameListener {
+interface GenerativeModelListener {
     fun onModelNameChanged(targetModelName: String)
 }

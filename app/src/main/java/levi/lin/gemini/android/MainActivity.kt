@@ -20,11 +20,11 @@ import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
 import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
-import levi.lin.gemini.android.utility.ModelNameListener
+import levi.lin.gemini.android.utility.GenerativeModelListener
 import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import java.io.IOException
 
-class MainActivity : ComponentActivity(), ModelNameListener {
+class MainActivity : ComponentActivity(), GenerativeModelListener {
     // Gemini AI Model
     private lateinit var generativeModel: GenerativeModel
     private lateinit var viewModel: GeminiViewModel
