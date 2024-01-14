@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,10 +51,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.ai.client.generativeai.GenerativeModel
+import levi.lin.gemini.android.BuildConfig
 import levi.lin.gemini.android.GeminiUiState
 import levi.lin.gemini.android.GeminiViewModel
 import levi.lin.gemini.android.R
@@ -67,6 +69,12 @@ internal fun GeminiScreenContainer(
     val geminiUiState by geminiViewModel.uiState.collectAsState()
     val selectedImageBitmapList by geminiViewModel.selectedImageBitmaps.collectAsState()
     val selectedImageCount by geminiViewModel.selectedImageCount.collectAsState()
+
+    LaunchedEffect(selectedImageBitmapList) {
+        val targetModelName =
+            if (selectedImageBitmapList.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
+        geminiViewModel.updateGenerativeModel(GenerativeModel(targetModelName, BuildConfig.apiKey))
+    }
 
     GeminiScreen(
         uiState = geminiUiState,
@@ -241,7 +249,7 @@ fun ScreenContent(uiState: GeminiUiState, innerPadding: PaddingValues) {
                 Box(modifier = Modifier.verticalScroll(scrollState)) {
                     SelectionContainer {
                         Text(
-                            text = uiState.outputText,
+                            text = uiState.outputText.trim(),
                             modifier = Modifier.padding(10.dp)
                         )
                     }
@@ -273,10 +281,4 @@ fun ErrorMessage(message: String) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = message, color = Color.Red)
     }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-fun GeminiScreenPreview() {
-    GeminiScreen()
 }

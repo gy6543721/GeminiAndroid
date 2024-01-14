@@ -5,14 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class GeminiViewModel(
-    private val generativeModel: GenerativeModel
+    private var generativeModel: GenerativeModel
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<GeminiUiState> =
@@ -25,6 +28,12 @@ class GeminiViewModel(
 
     private val _selectedImageCount = MutableStateFlow(0)
     val selectedImageCount: StateFlow<Int> = _selectedImageCount.asStateFlow()
+
+    val modelNameFlow: Flow<String> = selectedImageBitmaps
+        .map { images ->
+            if (images.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
+        }
+        .distinctUntilChanged()
 
     fun respond(inputText: String) {
         _uiState.value = GeminiUiState.Loading
@@ -71,5 +80,9 @@ class GeminiViewModel(
     fun clearSelectedImages() {
         _selectedImageBitmaps.value = emptyList()
         _selectedImageCount.value = 0
+    }
+
+    fun updateGenerativeModel(targetModel: GenerativeModel) {
+        generativeModel = targetModel
     }
 }

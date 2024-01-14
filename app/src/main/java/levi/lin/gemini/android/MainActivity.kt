@@ -13,20 +13,39 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.ai.client.generativeai.GenerativeModel
+import kotlinx.coroutines.launch
 import levi.lin.gemini.android.ui.screen.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
+import java.io.IOException
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), ModelNameListener {
     // Gemini AI Model
-    private val generativeModel = GenerativeModel(
-        modelName = "gemini-pro-vision",
-        apiKey = BuildConfig.apiKey
-    )
-    private val viewModel = GeminiViewModel(generativeModel)
+    private lateinit var generativeModel: GenerativeModel
+    private lateinit var viewModel: GeminiViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // init Gemini AI Model
+        generativeModel = GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = BuildConfig.apiKey
+        )
+        viewModel = GeminiViewModel(generativeModel = generativeModel)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.modelNameFlow.collect { modelName ->
+                    updateGenerativeModel(modelName)
+                }
+            }
+        }
+
+        // init UI
         setContent {
             GeminiAndroidTheme {
                 Surface(
@@ -41,35 +60,42 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onModelNameChanged(targetModelName: String) {
+        generativeModel = GenerativeModel(
+            modelName = targetModelName,
+            apiKey = BuildConfig.apiKey
+        )
+        viewModel.updateGenerativeModel(generativeModel)
+    }
+
     private val selectImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val imageBitmaps = mutableListOf<Bitmap>()
-                val clipData = data?.clipData
-                if (clipData != null) {
-                    // Multiple Images
-                    for (i in 0 until clipData.itemCount) {
-                        val uri = clipData.getItemAt(i).uri
-                        val bitmap = getBitmapFromUri(uri)
-                        imageBitmaps.add(bitmap)
-                    }
-                    viewModel.setImageCount(clipData.itemCount)
-                } else {
-                    // Single Image
-                    data?.data?.let { uri ->
-                        val bitmap = getBitmapFromUri(uri)
-                        imageBitmaps.add(bitmap)
-                    }
-                    viewModel.setImageCount(1)
-                }
+                val imageBitmaps = result.data?.let { extractBitmapsFromIntent(it) }.orEmpty()
+                viewModel.clearSelectedImages()
+                viewModel.setImageCount(imageBitmaps.size)
                 viewModel.setImageBitmaps(imageBitmaps)
             }
         }
 
-    private fun getBitmapFromUri(uri: Uri): Bitmap {
-        val inputStream = contentResolver.openInputStream(uri)
-        return BitmapFactory.decodeStream(inputStream)
+    private fun extractBitmapsFromIntent(intent: Intent): List<Bitmap> {
+        return intent.clipData?.let { clipData ->
+            (0 until clipData.itemCount).mapNotNull { index ->
+                getBitmapFromUri(clipData.getItemAt(index).uri)
+            }
+        } ?: intent.data?.let { uri ->
+            listOfNotNull(getBitmapFromUri(uri))
+        }.orEmpty()
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap? {
+        return try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                BitmapFactory.decodeStream(inputStream)
+            }
+        } catch (e: IOException) {
+            null
+        }
     }
 
     private fun selectImage() {
@@ -77,5 +103,12 @@ class MainActivity : ComponentActivity() {
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         selectImageResult.launch(intent)
+    }
+
+    private fun updateGenerativeModel(modelName: String) {
+        generativeModel = GenerativeModel(
+            modelName = modelName,
+            apiKey = BuildConfig.apiKey
+        )
     }
 }
