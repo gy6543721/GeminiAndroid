@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Gemini</string>
-    <string name="action_go">送信</string>
-    <string name="gemini_input_label">君の可愛い魔法アシスタント</string>
-    <string name="gemini_input_hint">何でも聞きたいことを入力してください、Geminiが優しく答えます</string>
+    <string name="gemini_input_label">君の可愛いアシスタント</string>
+    <string name="gemini_input_hint">何でも聞きたいことを入力してください、Geminiが優しく答えます。</string>
 </resources>

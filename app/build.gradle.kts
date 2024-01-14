@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "levi.lin.gemini.android"
-        minSdk = 29
+        minSdk = 30
         targetSdk = 34
-        versionCode = 6
-        versionName = "0.0.6"
+        versionCode = 7
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -63,7 +63,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -74,6 +73,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
+    implementation(libs.androidx.browser)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
