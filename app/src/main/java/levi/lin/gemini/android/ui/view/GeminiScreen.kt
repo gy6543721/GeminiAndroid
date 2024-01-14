@@ -61,7 +61,6 @@ import levi.lin.gemini.android.BuildConfig
 import levi.lin.gemini.android.ui.state.GeminiUiState
 import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import levi.lin.gemini.android.R
-import levi.lin.gemini.android.ui.theme.LightBlue80
 
 @Composable
 internal fun GeminiScreenContainer(
@@ -140,7 +139,7 @@ fun InputBar(
     val keyboardController = LocalSoftwareKeyboardController.current
     Row(
         modifier = Modifier
-            .background(color = LightBlue80)
+            .background(color = MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
             .padding(all = 10.dp),
         verticalAlignment = Alignment.CenterVertically
