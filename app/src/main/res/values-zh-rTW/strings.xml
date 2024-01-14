@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">Gemini</string>
     <string name="gemini_input_label">愛你的魔法小幫手</string>
-    <string name="gemini_input_hint">請輸入任何文字，小幫手會親切的回應</string>
+    <string name="gemini_input_hint">請輸入任何文字，小幫手會親切的回應唷</string>
 </resources>

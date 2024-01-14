@@ -164,7 +164,7 @@ fun InputBar(
                 }
             }
         )
-        Spacer(modifier = Modifier.weight(0.02f))
+        Spacer(modifier = Modifier.weight(0.05f))
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -189,19 +189,19 @@ fun InputBar(
                     if (selectedImageCount > 1) {
                         Box(
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(24.dp)
                                 .clip(CircleShape)
-                                .background(Color.Red),
+                                .background(MaterialTheme.colorScheme.primary),
                             contentAlignment = Alignment.Center
                         ) {
                             val fontSize = when (selectedImageCount.toString().length) {
-                                1 -> 12.sp
-                                2 -> 10.sp
-                                else -> 8.sp
+                                1 -> 10.sp
+                                2 -> 8.sp
+                                else -> 6.sp
                             }
                             Text(
                                 text = selectedImageCount.toString(),
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = fontSize,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
