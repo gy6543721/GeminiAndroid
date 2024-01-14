@@ -14,6 +14,7 @@ API_KEY=[your api key]
 ```
 ### Screenshots
 
-Launch | Response
+Text | Image
 :--: | :--:
-<img width="271" alt="Launch" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/9185036a-8177-4c22-9a88-a712a1c1e186"> | <img width="271" alt="Response" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/129de908-4dfe-4843-909c-b22fbcdc34d4">
+<img width="271" alt="Text" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/d19267f6-da89-4b32-9567-f8591acc4d29"> | <img width="271" alt="Image" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/1904d5cf-c40b-4b7e-9d50-2c5cb27d1a8b">
+<img width="271" alt="Text" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/3c9fcba4-00ef-4a17-819c-91bc6b60f74d"> | <img width="271" alt="Image" src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/af6bdd03-bbf9-4d73-b632-f7da5c35b5cc">
