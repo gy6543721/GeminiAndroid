@@ -41,11 +41,11 @@ class GeminiViewModel(
 
         val deviceLanguage = Locale.getDefault().displayLanguage
         val textPrompt =
-            "According to the provided contents ($inputText), "
+            "Content:($inputText) /n You are a lovely assistant. According to the provided content, "
         val imagePrompt =
-            "According to the provided images and contents ($inputText), "
+            "Content:($inputText) /n You are a lovely assistant. According to the provided images and content, "
         val generalPrompt =
-            "respond with detail answers or advices in $deviceLanguage as if you are the speaker's special one."
+            "if the content is a question, answer the question in $deviceLanguage. If the content is a request, respond with detail information in $deviceLanguage."
         val imageList = selectedImageBitmaps.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
