@@ -5,13 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import levi.lin.gemini.android.BuildConfig
 import levi.lin.gemini.android.ui.state.GeminiUiState
 import java.util.Locale
 
@@ -30,22 +31,19 @@ class GeminiViewModel(
     private val _selectedImageCount = MutableStateFlow(0)
     val selectedImageCount: StateFlow<Int> = _selectedImageCount.asStateFlow()
 
-    val modelNameFlow: Flow<String> = selectedImageBitmaps
-        .map { images ->
-            if (images.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
-        }
-        .distinctUntilChanged()
+    private val _generativeModelFlow = MutableSharedFlow<GenerativeModel>()
+    val generativeModelFlow: SharedFlow<GenerativeModel> = _generativeModelFlow.asSharedFlow()
 
     fun respond(inputText: String) {
         _uiState.value = GeminiUiState.Loading
 
         val deviceLanguage = Locale.getDefault().displayLanguage
         val textPrompt =
-            "According to the provided contents ($inputText), "
+            "Content:($inputText) \\n You are a lovely assistant. According to the provided content, "
         val imagePrompt =
-            "According to the provided images and contents ($inputText), "
+            "Content:($inputText) \\n You are a lovely assistant. According to the provided images and content, "
         val generalPrompt =
-            "respond with detail answers or advices in $deviceLanguage as if you are the speaker's special one."
+            "if the content is a question, answer the question in $deviceLanguage. If the content is a request, respond with detailed information in $deviceLanguage."
         val imageList = selectedImageBitmaps.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
@@ -83,7 +81,13 @@ class GeminiViewModel(
         _selectedImageCount.value = 0
     }
 
-    fun updateGenerativeModel(targetModel: GenerativeModel) {
-        generativeModel = targetModel
+    suspend fun updateGenerativeModel(targetModelName: String) {
+        if (generativeModel.modelName != targetModelName) {
+            generativeModel = GenerativeModel(
+                modelName = targetModelName,
+                apiKey = BuildConfig.apiKey
+            )
+            _generativeModelFlow.emit(generativeModel)
+        }
     }
 }
