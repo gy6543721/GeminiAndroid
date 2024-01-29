@@ -56,8 +56,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.ai.client.generativeai.GenerativeModel
-import levi.lin.gemini.android.BuildConfig
 import levi.lin.gemini.android.ui.state.GeminiUiState
 import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import levi.lin.gemini.android.R
@@ -74,7 +72,7 @@ internal fun GeminiScreenContainer(
     LaunchedEffect(selectedImageBitmapList) {
         val targetModelName =
             if (selectedImageBitmapList.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
-        geminiViewModel.updateGenerativeModel(GenerativeModel(targetModelName, BuildConfig.apiKey))
+        geminiViewModel.updateGenerativeModel(targetModelName = targetModelName)
     }
 
     GeminiScreen(
