@@ -25,20 +25,23 @@ android {
         val properties = Properties()
         if (project.rootProject.file("local.properties").canRead()) {
             properties.load(project.rootProject.file("local.properties").inputStream())
-
         }
 
-        buildConfigField("String", "apiKey", "\"${properties.getProperty("API_KEY")}\"")
+        buildConfigField(
+            type = "String",
+            name = "apiKey",
+            value = "\"${properties.getProperty("API_KEY")}\""
+        )
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile(name = "proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(name = "debug")
         }
     }
     compileOptions {
@@ -53,7 +56,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
