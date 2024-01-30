@@ -28,7 +28,7 @@ class GeminiViewModel(
     private val _selectedImageBitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
     val selectedImageBitmaps: StateFlow<List<Bitmap>> = _selectedImageBitmaps.asStateFlow()
 
-    private val _selectedImageCount = MutableStateFlow(0)
+    private val _selectedImageCount = MutableStateFlow(value = 0)
     val selectedImageCount: StateFlow<Int> = _selectedImageCount.asStateFlow()
 
     private val _generativeModelFlow = MutableSharedFlow<GenerativeModel>()
@@ -38,22 +38,16 @@ class GeminiViewModel(
         _uiState.value = GeminiUiState.Loading
 
         val deviceLanguage = Locale.getDefault().displayLanguage
-        val textPrompt =
-            "Content:($inputText) \\n You are a lovely assistant. According to the provided content, "
-        val imagePrompt =
-            "Content:($inputText) \\n You are a lovely assistant. According to the provided images and content, "
-        val generalPrompt =
-            "if the content is a question, answer the question in $deviceLanguage. If the content is a request, respond with detailed information in $deviceLanguage."
+        val prompt =
+            "$inputText (respond in $deviceLanguage)"
         val imageList = selectedImageBitmaps.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
                 imageList.forEach { image ->
                     image(image = image)
                 }
-                text(text = imagePrompt + generalPrompt)
-            } else {
-                text(text = textPrompt + generalPrompt)
             }
+            text(text = prompt)
         }
 
         viewModelScope.launch {
@@ -63,7 +57,7 @@ class GeminiViewModel(
                     _uiState.value = GeminiUiState.Success(outputContent)
                 }
             } catch (e: Exception) {
-                _uiState.value = GeminiUiState.Error(e.localizedMessage ?: "")
+                _uiState.value = GeminiUiState.Error(errorMessage = e.localizedMessage ?: "")
             }
         }
     }

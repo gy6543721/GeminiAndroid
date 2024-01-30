@@ -14,31 +14,23 @@ android {
         applicationId = "levi.lin.gemini.android"
         minSdk = 30
         targetSdk = 34
-        versionCode = 8
-        versionName = "0.1.1"
+        versionCode = 9
+        versionName = "0.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        val properties = Properties()
-        if (project.rootProject.file("local.properties").canRead()) {
-            properties.load(project.rootProject.file("local.properties").inputStream())
-
-        }
-
-        buildConfigField("String", "apiKey", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile(name = "proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(name = "debug")
         }
     }
     compileOptions {
@@ -53,7 +45,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {

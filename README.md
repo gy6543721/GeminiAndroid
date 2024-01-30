@@ -13,7 +13,7 @@ Please add your own API key into `local.properties` after cloning this app.
 You can get Gemini API key [here](https://ai.google.dev/).  
 
 ```
-API_KEY=[your api key]
+apiKey=[your api key]
 ```
 ### Screenshots
 
