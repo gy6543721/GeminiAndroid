@@ -66,7 +66,7 @@ internal fun GeminiScreenContainer(
     onImageSelected: () -> Unit = {}
 ) {
     val geminiUiState by geminiViewModel.uiState.collectAsState()
-    val selectedImageBitmapList by geminiViewModel.selectedImageBitmaps.collectAsState()
+    val selectedImageBitmapList by geminiViewModel.selectedImageBitmapList.collectAsState()
     val selectedImageCount by geminiViewModel.selectedImageCount.collectAsState()
 
     LaunchedEffect(selectedImageBitmapList) {
@@ -83,7 +83,7 @@ internal fun GeminiScreenContainer(
             geminiViewModel.respond(inputText)
         },
         onImageSelected = onImageSelected,
-        onClearImages = {
+        onClearImage = {
             geminiViewModel.clearSelectedImages()
         }
     )
@@ -96,7 +96,7 @@ fun GeminiScreen(
     selectedImageCount: Int = 0,
     onButtonClicked: (String) -> Unit = {},
     onImageSelected: () -> Unit = {},
-    onClearImages: () -> Unit = {}
+    onClearImage: () -> Unit = {}
 ) {
     var inputText by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
@@ -121,7 +121,7 @@ fun GeminiScreen(
                 },
                 onButtonClicked = onButtonClicked,
                 onImageSelected = onImageSelected,
-                onClearImages = onClearImages
+                onClearImage = onClearImage
             )
         }
     ) { innerPadding ->
@@ -138,7 +138,7 @@ fun InputBar(
     onTextChange: (String) -> Unit,
     onButtonClicked: (String) -> Unit,
     onImageSelected: () -> Unit,
-    onClearImages: () -> Unit
+    onClearImage: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Row(
@@ -222,7 +222,7 @@ fun InputBar(
 
             if (selectedImageBitmapList.isNotEmpty()) {
                 IconButton(
-                    onClick = { onClearImages() },
+                    onClick = { onClearImage() },
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(15.dp)
