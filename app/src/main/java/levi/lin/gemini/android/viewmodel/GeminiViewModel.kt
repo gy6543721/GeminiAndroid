@@ -28,7 +28,7 @@ class GeminiViewModel(
     private val _selectedImageBitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
     val selectedImageBitmaps: StateFlow<List<Bitmap>> = _selectedImageBitmaps.asStateFlow()
 
-    private val _selectedImageCount = MutableStateFlow(0)
+    private val _selectedImageCount = MutableStateFlow(value = 0)
     val selectedImageCount: StateFlow<Int> = _selectedImageCount.asStateFlow()
 
     private val _generativeModelFlow = MutableSharedFlow<GenerativeModel>()
@@ -57,7 +57,7 @@ class GeminiViewModel(
                     _uiState.value = GeminiUiState.Success(outputContent)
                 }
             } catch (e: Exception) {
-                _uiState.value = GeminiUiState.Error(e.localizedMessage ?: "")
+                _uiState.value = GeminiUiState.Error(errorMessage = e.localizedMessage ?: "")
             }
         }
     }
