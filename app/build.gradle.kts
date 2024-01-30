@@ -21,17 +21,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        val properties = Properties()
-        if (project.rootProject.file("local.properties").canRead()) {
-            properties.load(project.rootProject.file("local.properties").inputStream())
-        }
-
-        buildConfigField(
-            type = "String",
-            name = "apiKey",
-            value = "\"${properties.getProperty("API_KEY")}\""
-        )
     }
 
     buildTypes {
