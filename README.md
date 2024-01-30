@@ -1,9 +1,12 @@
 # Gemini Android
+
+<img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
+
 Gemini Android App written in Kotlin and Compose.  
 Now support English, Japanese, Traditional Chinese, Simplified Chinese and Cantonese, will support more languages in the future.  
 [Google Play Store](https://play.google.com/store/apps/details?id=levi.lin.gemini.android)  
 
-<img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
+<img src="https://github.com/gy6543721/GeminiAndroid/assets/46208481/0b614b5a-6922-4827-95f0-8faf0bbc340c" height="200"/>
 
 ### Introduction
 Please add your own API key into `local.properties` after cloning this app.  
