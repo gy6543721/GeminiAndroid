@@ -43,7 +43,7 @@ class GeminiViewModel(
         val imagePrompt =
             "You are a lovely assistant. According to the provided images and text ($inputText), "
         val generalPrompt =
-            "If the text is a question, answer the question in $deviceLanguage. If the text is a request, respond to the request in $deviceLanguage. If there is no text and only images are provided, describe the images in $deviceLanguage."
+            "if the text is a question, answer the question in $deviceLanguage. If the text is a request, respond to the request in $deviceLanguage. If there is no text and only images are provided, describe the images in $deviceLanguage."
         val imageList = selectedImageBitmaps.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
