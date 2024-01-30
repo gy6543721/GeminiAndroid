@@ -277,7 +277,7 @@ fun ScreenContent(uiState: GeminiUiState, innerPadding: PaddingValues) {
             }
 
             is GeminiUiState.Error -> {
-                ErrorMessage(uiState.errorMessage)
+                ErrorMessage(message = uiState.errorMessage)
             }
 
             else -> Spacer(modifier = Modifier.fillMaxHeight())
