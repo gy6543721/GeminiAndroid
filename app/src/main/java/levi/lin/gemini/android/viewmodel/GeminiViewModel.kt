@@ -25,8 +25,8 @@ class GeminiViewModel(
     val uiState: StateFlow<GeminiUiState> =
         _uiState.asStateFlow()
 
-    private val _selectedImageBitmapList = MutableStateFlow<List<Bitmap>>(emptyList())
-    val selectedImageBitmapList: StateFlow<List<Bitmap>> = _selectedImageBitmapList.asStateFlow()
+    private val _selectedImageList = MutableStateFlow<List<Bitmap>>(emptyList())
+    val selectedImageList: StateFlow<List<Bitmap>> = _selectedImageList.asStateFlow()
 
     private val _selectedImageCount = MutableStateFlow(value = 0)
     val selectedImageCount: StateFlow<Int> = _selectedImageCount.asStateFlow()
@@ -40,7 +40,7 @@ class GeminiViewModel(
         val deviceLanguage = Locale.getDefault().displayLanguage
         val prompt =
             "$inputText (respond in $deviceLanguage)"
-        val imageList = selectedImageBitmapList.value
+        val imageList = selectedImageList.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
                 imageList.forEach { image ->
@@ -62,16 +62,16 @@ class GeminiViewModel(
         }
     }
 
-    fun setImageBitmapList(imageList: List<Bitmap>) {
-        _selectedImageBitmapList.value = imageList
+    fun setImageList(imageList: List<Bitmap>) {
+        _selectedImageList.value = imageList
     }
 
     fun setImageCount(count: Int) {
         _selectedImageCount.value = count
     }
 
-    fun clearSelectedImages() {
-        _selectedImageBitmapList.value = emptyList()
+    fun clearImageList() {
+        _selectedImageList.value = emptyList()
         _selectedImageCount.value = 0
     }
 

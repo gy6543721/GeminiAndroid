@@ -64,9 +64,9 @@ class MainActivity : ComponentActivity() {
                 val imageBitmaps = result.data?.let { intent ->
                     extractBitmapsFromIntent(intent = intent)
                 }.orEmpty()
-                viewModel.clearSelectedImages()
+                viewModel.clearImageList()
                 viewModel.setImageCount(count = imageBitmaps.size)
-                viewModel.setImageBitmapList(imageList = imageBitmaps)
+                viewModel.setImageList(imageList = imageBitmaps)
             }
         }
 

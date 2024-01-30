@@ -66,25 +66,25 @@ internal fun GeminiScreenContainer(
     onImageSelected: () -> Unit = {}
 ) {
     val geminiUiState by geminiViewModel.uiState.collectAsState()
-    val selectedImageBitmapList by geminiViewModel.selectedImageBitmapList.collectAsState()
+    val selectedImageList by geminiViewModel.selectedImageList.collectAsState()
     val selectedImageCount by geminiViewModel.selectedImageCount.collectAsState()
 
-    LaunchedEffect(selectedImageBitmapList) {
+    LaunchedEffect(selectedImageList) {
         val targetModelName =
-            if (selectedImageBitmapList.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
+            if (selectedImageList.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
         geminiViewModel.updateGenerativeModel(targetModelName = targetModelName)
     }
 
     GeminiScreen(
         uiState = geminiUiState,
-        selectedImageBitmapList = selectedImageBitmapList,
+        selectedImageBitmapList = selectedImageList,
         selectedImageCount = selectedImageCount,
         onButtonClicked = { inputText ->
             geminiViewModel.respond(inputText)
         },
         onImageSelected = onImageSelected,
         onClearImage = {
-            geminiViewModel.clearSelectedImages()
+            geminiViewModel.clearImageList()
         }
     )
 }
