@@ -38,22 +38,16 @@ class GeminiViewModel(
         _uiState.value = GeminiUiState.Loading
 
         val deviceLanguage = Locale.getDefault().displayLanguage
-        val textPrompt =
-            "You are a lovely assistant. According to the provided text ($inputText), "
-        val imagePrompt =
-            "You are a lovely assistant. According to the provided images and text ($inputText), "
-        val generalPrompt =
-            "if the text is a question, answer the question in $deviceLanguage. If the text is a request, respond to the request in $deviceLanguage. If there is no text and only images are provided, describe the images in $deviceLanguage."
+        val prompt =
+            "$inputText (respond in $deviceLanguage)"
         val imageList = selectedImageBitmaps.value
         val inputContent = content {
             if (imageList.isNotEmpty()) {
                 imageList.forEach { image ->
                     image(image = image)
                 }
-                text(text = imagePrompt + generalPrompt)
-            } else {
-                text(text = textPrompt + generalPrompt)
             }
+            text(text = prompt)
         }
 
         viewModelScope.launch {
