@@ -64,19 +64,19 @@ class MainActivity : ComponentActivity() {
                 val imageBitmaps = result.data?.let { intent ->
                     extractBitmapsFromIntent(intent = intent)
                 }.orEmpty()
-                viewModel.clearSelectedImages()
-                viewModel.setImageCount(imageBitmaps.size)
-                viewModel.setImageBitmaps(imageBitmaps)
+                viewModel.clearImageList()
+                viewModel.setImageCount(count = imageBitmaps.size)
+                viewModel.setImageList(imageList = imageBitmaps)
             }
         }
 
     private fun extractBitmapsFromIntent(intent: Intent): List<Bitmap> {
         return intent.clipData?.let { clipData ->
             (0 until clipData.itemCount).mapNotNull { index ->
-                getBitmapFromUri(clipData.getItemAt(index).uri)
+                getBitmapFromUri(uri = clipData.getItemAt(index).uri)
             }
         } ?: intent.data?.let { uri ->
-            listOfNotNull(getBitmapFromUri(uri))
+            listOfNotNull(getBitmapFromUri(uri = uri))
         }.orEmpty()
     }
 
