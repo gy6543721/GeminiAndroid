@@ -12,8 +12,8 @@ android {
         applicationId = "levi.lin.gemini.android"
         minSdk = 30
         targetSdk = 34
-        versionCode = 9
-        versionName = "0.2.0"
+        versionCode = 10
+        versionName = "0.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
