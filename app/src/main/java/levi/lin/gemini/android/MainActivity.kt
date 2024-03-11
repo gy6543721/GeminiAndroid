@@ -52,7 +52,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     GeminiScreenContainer(
                         geminiViewModel = viewModel,
-                        onImageSelected = { selectImage() })
+                        onImageSelected = { selectImage() }
+                    )
                 }
             }
         }
