@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gemini</string>
+    <string name="gemini_input_label">愛你嘅魔法小幫手</string>
+    <string name="gemini_input_hint">請輸入任何文字，小幫手會友善咁回應你</string>
+</resources>
