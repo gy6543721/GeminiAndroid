@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "baseBranches": [
+    "develop"
+  ],
+  "ignoreDeps": [
+    "com.google.ai.client.generativeai:generativeai",
+    "org.jetbrains.kotlin.android",
+    "com.google.devtools.ksp"
+  ]
+}
