@@ -5,9 +5,11 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+#noinspection GradleDependency
 lifecycle = "2.7.0"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
+#noinspection GradleDependency
 generativeai = "0.1.2"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 browser = "1.8.0"
@@ -34,8 +36,8 @@ androidx-browser = { group = "androidx.browser", name = "browser", version.ref =
 play-integrity = { module = "com.google.android.play:integrity", version.ref = "integrity" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
+agp = { id = "com.android.application", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-googleAndroidLibrariesMapsplatformSecretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
 
