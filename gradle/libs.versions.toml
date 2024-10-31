@@ -8,7 +8,7 @@ espressoCore = "3.6.1"
 #noinspection GradleDependency
 lifecycle = "2.7.0"
 activityCompose = "1.9.0"
-composeBom = "2024.06.00"
+composeBom = "2024.10.01"
 #noinspection GradleDependency
 generativeai = "0.1.2"
 secretsGradlePlugin = "2.0.1"
