@@ -16,10 +16,8 @@ class MessageState(
     fun replaceLastMessage() {
         val lastMessage = _messageItems.lastOrNull()
         lastMessage?.let {
-            val newMessage = lastMessage.apply {
-                isPending = false
-            }
-            _messageItems.removeLast()
+            val newMessage = lastMessage.copy(isPending = false)
+            _messageItems.remove(it)
             _messageItems.add(newMessage)
         }
     }
