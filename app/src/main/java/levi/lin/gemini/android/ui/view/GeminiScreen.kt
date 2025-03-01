@@ -20,10 +20,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import levi.lin.gemini.android.state.MessageState
 import levi.lin.gemini.android.ui.view.component.InputBar
 import levi.lin.gemini.android.ui.view.component.MessageList
+import levi.lin.gemini.android.viewmodel.GeminiViewModel
 
 @Composable
 internal fun GeminiScreenContainer(
@@ -38,7 +38,7 @@ internal fun GeminiScreenContainer(
 
     LaunchedEffect(selectedImageList) {
         val targetModelName =
-            if (selectedImageList.isNotEmpty()) "gemini-pro-vision" else "gemini-pro"
+            if (selectedImageList.isNotEmpty()) "gemini-1.5-flash" else "gemini-1.5-pro"
         geminiViewModel.updateGenerativeModel(targetModelName = targetModelName)
     }
 

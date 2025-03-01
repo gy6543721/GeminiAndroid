@@ -1,6 +1,5 @@
 package levi.lin.gemini.android
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
-import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
+import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import java.io.IOException
 
@@ -31,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         // init Gemini AI Model
         generativeModel = GenerativeModel(
-            modelName = "gemini-pro",
+            modelName = "gemini-1.5-pro",
             apiKey = BuildConfig.apiKey
         )
         viewModel = GeminiViewModel(generativeModel = generativeModel)
@@ -61,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
     private val selectImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 val imageBitmaps = result.data?.let { intent ->
                     extractBitmapsFromIntent(intent = intent)
                 }.orEmpty()
