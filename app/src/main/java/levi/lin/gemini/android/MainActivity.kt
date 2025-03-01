@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
-import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.ui.theme.GeminiAndroidTheme
+import levi.lin.gemini.android.ui.view.GeminiScreenContainer
 import levi.lin.gemini.android.viewmodel.GeminiViewModel
 import java.io.IOException
 
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
         // init Gemini AI Model
         generativeModel = GenerativeModel(
-            modelName = "gemini-pro",
+            modelName = "gemini-1.5-pro",
             apiKey = BuildConfig.apiKey
         )
         viewModel = GeminiViewModel(generativeModel = generativeModel)
