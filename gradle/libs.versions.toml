@@ -31,7 +31,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
-play-integrity = { module = "com.google.android.play:integrity", version.ref = "integrity" }
+play-integrity = { group = "com.google.android.play", name = "integrity", version.ref = "integrity" }
 
 [plugins]
 agp = { id = "com.android.application", version.ref = "agp" }
