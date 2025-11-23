@@ -38,7 +38,7 @@ internal fun GeminiScreenContainer(
 
     LaunchedEffect(selectedImageList) {
         val targetModelName =
-            if (selectedImageList.isNotEmpty()) "gemini-1.5-flash" else "gemini-1.5-pro"
+            if (selectedImageList.isNotEmpty()) "gemini-2.5-flash" else "gemini-2.5-pro"
         geminiViewModel.updateGenerativeModel(targetModelName = targetModelName)
     }
 
