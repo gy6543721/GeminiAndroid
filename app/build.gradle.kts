@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.agp)
     alias(libs.plugins.compose.compiler)
@@ -7,12 +9,12 @@ plugins {
 
 android {
     namespace = "levi.lin.gemini.android"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "levi.lin.gemini.android"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 10
         versionName = "0.3.0"
 
@@ -38,8 +40,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     buildFeatures {
@@ -63,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material.icons)
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
     implementation(libs.androidx.browser)

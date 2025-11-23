@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         // init Gemini AI Model
         generativeModel = GenerativeModel(
-            modelName = "gemini-1.5-pro",
+            modelName = "gemini-2.5-flash",
             apiKey = BuildConfig.apiKey
         )
         viewModel = GeminiViewModel(generativeModel = generativeModel)
