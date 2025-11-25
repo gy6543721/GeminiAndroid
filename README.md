@@ -1,3 +1,5 @@
+# Not Good to fork other people's original repo without leaving a star and following the author. - [Levi Lin (Author of this repo)](https://github.com/gy6543721)
+
 # Gemini Android
 
 <img src="https://github.com/gy6543721/GeminiAndroid/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
