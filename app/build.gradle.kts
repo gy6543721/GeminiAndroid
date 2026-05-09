@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "levi.lin.gemini.android"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "levi.lin.gemini.android"
         minSdk = 30
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 10
         versionName = "0.3.0"
 
